@@ -1,0 +1,57 @@
+.headerSection {
+  background-image: url("https://previews.123rf.com/images/nosua/nosua1705/nosua170500169/78935526-cinema-had-light-concept-nave-lets-watch-cinema-3d-render-cinema-background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 700px;
+  background-position: 0% 90%;
+}
+
+.body {
+  background-color: #141414;
+}
+
+.vignette {
+  position: absolute;
+  background-color: transparent;
+  background-image: linear-gradient(
+    180deg,
+    hsla(0, 0%, 8%, 0) 0,
+    hsla(0, 0%, 8%, 0.05) 5%,
+    hsla(0, 0%, 8%, 0.1) 50%,
+    hsla(0, 0%, 8%, 0.4) 70%,
+    #141414 95%,
+    #141414
+  );
+  background-position: 0 top;
+  background-repeat: repeat-x;
+  background-size: 100% 100%;
+  height: 700px;
+  opacity: 1;
+  top: auto;
+  width: 100%;
+}
+
+.movie-card {
+  scale: 1;
+  transform: scale(1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 1);
+}
+
+.movie-card:hover {
+  transform: scale(1.2);
+  z-index: 1;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 1);
+  transition: 0.2s;
+}
+
+.rating-div {
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  height: 200px;
+}
+
+.rating {
+  color: orangered;
+}
