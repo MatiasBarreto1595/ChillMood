@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
+import { Link } from "react-router-dom";
 function MovieDetails() {
   const navigate = useNavigate();
   // const [products, setProducts] = useState([]);
@@ -13,6 +13,24 @@ function MovieDetails() {
 
   let { id } = useParams();
   const [movie, setMovie] = React.useState(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const handleClick = () => {
+    setIsClicked(true);
+
+    // Después de 1 segundo, vuelve a establecer isClicked en false
+    setTimeout(() => {
+      setIsClicked(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 50);
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
 
   React.useEffect(() => {
     axios
@@ -55,47 +73,48 @@ function MovieDetails() {
   // }, []);
   /////////////////////////////////////////////////////////
 
-  // useEffect(() => {
-  //   const getMovies = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `https://api.themoviedb.org/3/discover/movie?api_key=b96e9e6aefb2fa33936d055a6e07fa83&language=es&page=${page}`
-  //       );
-  //       if (response.data.results.length > 0) {
-  //         console.log(response);
-  //         setMovies([...movies, ...response.data.results]);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error al obtener datos de la API: ", error);
-  //     }
-  //     console.log("API Response:", response.data);
-  //     setMovies(response.data);
-  //   };
+  useEffect(() => {
+    const getMovies = async () => {
+      try {
+        const response = await axios.get(
+          `https://api.themoviedb.org/3/discover/movie?api_key=b96e9e6aefb2fa33936d055a6e07fa83&language=es&page=${page}`
+        );
+        if (response.data.results.length > 0) {
+          console.log(response);
+          setMovies(response.data.results);
+        }
+        // console.log("API Response:", response.data);
+        // setMovies(response.data);
+      } catch (error) {
+        console.error("Error al obtener datos de la API: ", error);
+      }
+    };
 
-  //   getMovies();
-  // }, []);
+    getMovies();
+  }, []);
 
-  // useEffect(() => {
-  //   if (movies.length > 0) {
-  //     console.log("Movies totales:", movies);
-  //     let updatedRandomMovie = [];
+  useEffect(() => {
+    if (movies.length > 0) {
+      console.log("Movies totales:", movies);
+      let updatedRandomMovie = [];
+      const maxRandomMovies = Math.min(5, movies.length);
 
-  //     while (updatedRandomMovie.length < 3) {
-  //       const random = Math.floor(Math.random() * movies.length);
-  //       const selectedMovie = movies[random];
+      while (updatedRandomMovie.length < maxRandomMovies) {
+        const random = Math.floor(Math.random() * movies.length);
+        const selectedMovie = movies[random];
 
-  //       // Verifica si el producto no está ya en updatedRandomProduct
-  //       if (
-  //         !updatedRandomMovie.some((movie) => movie._id === selectedMovie._id)
-  //       ) {
-  //         updatedRandomMovie.push(selectedMovie);
-  //         console.log("Producto aleatorio añadido:", selectedMovie);
-  //       }
-  //     }
+        // Verifica si el producto no está ya en updatedRandomProduct
+        if (
+          !updatedRandomMovie.some((movie) => movie.id === selectedMovie.id)
+        ) {
+          updatedRandomMovie.push(selectedMovie);
+          console.log("Producto aleatorio añadido:", selectedMovie);
+        }
+      }
 
-  //     setRandomMovies(updatedRandomMovie);
-  //   }
-  // }, [movies]);
+      setRandomMovies(updatedRandomMovie);
+    }
+  }, [movies]);
   // ACA HAY QUE VER PORQUE NO FUNCIONA CON LOS LLAMADOS DE LA API, EXPLOTA PERO VAMOS POR BUEN CAMINO, PROBA CON CHATGPT
   function Redirect() {
     navigate(`/`);
@@ -121,33 +140,29 @@ function MovieDetails() {
         />
       </div>
       <h1 className="text-center  mt-5">YOU MAY ALSO LIKE</h1>
-      {/* <div className="d-flex flex-md-row flex-column align-items-center ">
+      <div className="d-flex flex-md-row flex-column align-items-center justify-content-around ">
         {randomMovies &&
           randomMovies.map((movieRandom) => (
-            <div
-              key={movieRandom._id}
-              className="d-flex  justify-content-evenly col-4 text-center d-grid"
-            >
+            <div key={movieRandom.id} className="d-flex">
               <div className="align-self-baseline">
-                <Link to={`/pelicula/${movieRandom._id}`} key={movieRandom._id}>
+                <Link to={`/pelicula/${movieRandom.id}`} key={movieRandom.id}>
                   <div
+                    className="secondaryMoviesSize"
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                   >
                     <img
-                      src={`${import.meta.env.VITE_URL_SUPABASE_IMG}${
-                        movieRandom.image
-                      }`}
+                      className="secondaryMovies"
+                      src={`http://image.tmdb.org/t/p/w500${movieRandom.poster_path}`}
                       alt="Original"
                       onClick={handleClick}
                     />
                   </div>
-                  <h3>{movieRandom.title}</h3>
                 </Link>
               </div>
             </div>
           ))}
-      </div> */}
+      </div>
 
       <button onClick={Redirect}>Regresar Home</button>
     </div>
